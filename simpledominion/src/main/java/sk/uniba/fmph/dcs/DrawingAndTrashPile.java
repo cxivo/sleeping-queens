@@ -13,10 +13,13 @@ public class DrawingAndTrashPile {
     private Random random;
 
     public DrawingAndTrashPile(List<Card> cards, Random random) {
+        this.random = random;
+
+        Collections.shuffle(drawingPile, random); 
         drawingPile = new Stack<Card>();
         drawingPile.addAll(cards);
+
         trashPile = new Stack<Card>();
-        this.random = random;
         cardsDiscardedThisTurn = new ArrayList<>();
     }
         
@@ -44,7 +47,7 @@ public class DrawingAndTrashPile {
         cardsDiscardedThisTurn.clear();
     }
 
-    private Card getTopCard() {
+    protected Card getTopCard() {
     	if (drawingPile.isEmpty()) {
             drawingPile.addAll(trashPile);
             trashPile.clear();
