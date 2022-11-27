@@ -4,8 +4,8 @@ import java.util.List;
 
 public class Player {
     String name;
-    Hand hand;
-    QueenCollection awokenQueens;
+    private Hand hand;
+    private QueenCollection awokenQueens;
 
     public Player(List<Card> cards, DrawingAndTrashPile pile) {
         hand = new Hand(cards, pile);
@@ -14,8 +14,12 @@ public class Player {
     public PlayerState getPlayerState() {
         return new PlayerState(hand.getCards(), awokenQueens);
     }
-    
-    public void play(TurnAction action) {
 
+    public Hand getHand() {
+        return hand;
+    }
+
+    public QueenCollection getAwokenQueens() {
+        return awokenQueens;
     }
 }

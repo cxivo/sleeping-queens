@@ -13,7 +13,7 @@ public class GameFinished implements GameFinishedStrategy {
     public Optional<Integer> isFinished() {
         for (int i = 0; i < game.getPlayerCount(); i++) {
             int score = 0, queens = 0;
-            for (Queen queen : game.getPlayers().get(i).awokenQueens.getQueens()) {
+            for (Queen queen : game.getPlayers().get(i).getAwokenQueens().getQueens()) {
                 score += queen.getPoints();
                 queens++;
             }

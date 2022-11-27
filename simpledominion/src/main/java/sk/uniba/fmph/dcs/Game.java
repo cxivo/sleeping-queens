@@ -2,6 +2,7 @@ package sk.uniba.fmph.dcs;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 public class Game {
@@ -13,9 +14,9 @@ public class Game {
     private int numberOfPlayers;
     private int onTurn = 0;
     private QueenCollection sleepingQueens;
-
     private List<Player> players;
     private DrawingAndTrashPile pile;
+    private GameFinishedStrategy gameFinishedStrategy;
 
     public Game(int numberOfPlayers) {
         if ((numberOfPlayers < MIN_PLAYERS) || (numberOfPlayers > MAX_PLAYERS)) {
@@ -30,6 +31,8 @@ public class Game {
 
         players = new ArrayList<>();
 
+        gameFinishedStrategy = new GameFinished(this);
+
         pile = new DrawingAndTrashPile(getFullCardList(), new Random());
 
         for (int i = 0; i < numberOfPlayers; i++) {
@@ -41,12 +44,40 @@ public class Game {
         }
     }
 
+    public GameState play(TurnAction action) {
+        // players.get(onTurn).play(action);
+        action.doAction(players.get(onTurn), this);
+        onTurn = (onTurn + 1) % numberOfPlayers;
+
+        // get player states
+        List<PlayerState> playerStates = new ArrayList<>();
+        for (Player player : players) {
+            playerStates.add(player.getPlayerState());
+        }
+
+        // is game won yet?
+        Optional<Integer> winnerIndex = gameFinishedStrategy.isFinished();
+        if (winnerIndex.isPresent()) {
+            return new GameState(numberOfPlayers, onTurn, sleepingQueens, playerStates, pile.getCardsDiscardedThisTurn(), winnerIndex.get());
+        } else {
+            return new GameState(numberOfPlayers, onTurn, sleepingQueens, playerStates, pile.getCardsDiscardedThisTurn());
+        }
+    }
+
+    public QueenCollection getSleepingQueens() {
+        return sleepingQueens;
+    }
+
     public int getPlayerCount() {
         return numberOfPlayers;
     }
 
     public List<Player> getPlayers() {
         return players;
+    }
+
+    public int getOnTurn() {
+        return onTurn;
     }
 
     private List<Card> getFullCardList() {
