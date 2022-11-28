@@ -44,17 +44,24 @@ public class Game {
         }
     }
 
-    public GameState play(TurnAction action) {
-        // players.get(onTurn).play(action);
-        action.doAction(players.get(onTurn), this);
-        onTurn = (onTurn + 1) % numberOfPlayers;
+    public Optional<GameState> play(TurnAction action) {
+        if (action.doAction(players.get(onTurn), this)) {
+            // success
+            onTurn = (onTurn + 1) % numberOfPlayers;
+            return Optional.of(getGameState());
+        } else {
+            // failure
+            return Optional.empty();
+        }
+    }
 
+    public GameState getGameState() {
         // get player states
         List<PlayerState> playerStates = new ArrayList<>();
         for (Player player : players) {
             playerStates.add(player.getPlayerState());
         }
-
+        
         // is game won yet?
         Optional<Integer> winnerIndex = gameFinishedStrategy.isFinished();
         if (winnerIndex.isPresent()) {

@@ -1,5 +1,6 @@
 package sk.uniba.fmph.dcs;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class EquationExchangeAction implements TurnAction {
@@ -16,6 +17,13 @@ public class EquationExchangeAction implements TurnAction {
     @Override
     public boolean doAction(Player player, Game game) {
         List<Card> cards = player.getHand().pickCards(equation);
+        // sort them from lowest to highest
+        cards.sort(new Comparator<Card>() {
+            @Override
+            public int compare(Card left, Card right) {
+                return Integer.compare(left.getValue(), right.getValue());
+            }   
+        });
 
         // left side of the equation
         int leftSide = 0;
