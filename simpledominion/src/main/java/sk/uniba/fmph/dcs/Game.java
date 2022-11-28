@@ -48,6 +48,7 @@ public class Game {
         if (action.doAction(players.get(onTurn), this)) {
             // success
             onTurn = (onTurn + 1) % numberOfPlayers;
+            pile.newTurn();
             return Optional.of(getGameState());
         } else {
             // failure
@@ -87,7 +88,7 @@ public class Game {
         return onTurn;
     }
 
-    private List<Card> getFullCardList() {
+    protected static List<Card> getFullCardList() {
         List<Card> cards = new ArrayList<>();
 
         // 8 Kings

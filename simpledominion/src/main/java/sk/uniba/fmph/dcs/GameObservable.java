@@ -62,13 +62,15 @@ public class GameObservable {
         info += "\nCards:\n";
         for (int i = 0; i < playerState.getCards().size(); i++) {
             Card card = playerState.getCards().get(i);
-            info += "   " + i + ") " + card.getType().toString();
+            info += "   " + (i + 1) + ") " + card.getType().toString();
             if (card.getType() == CardType.Number) {
                 info += " " + card.getValue();
             }
             info += "\n";
         }
 
+        info += "==========================================\n";
+        
         return info;
     }
 

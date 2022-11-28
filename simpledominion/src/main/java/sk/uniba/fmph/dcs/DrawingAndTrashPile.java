@@ -15,9 +15,9 @@ public class DrawingAndTrashPile {
     public DrawingAndTrashPile(List<Card> cards, Random random) {
         this.random = random;
 
-        Collections.shuffle(drawingPile, random); 
         drawingPile = new Stack<Card>();
         drawingPile.addAll(cards);
+        Collections.shuffle(drawingPile, random); 
 
         trashPile = new Stack<Card>();
         cardsDiscardedThisTurn = new ArrayList<>();
@@ -55,6 +55,8 @@ public class DrawingAndTrashPile {
         }
         return drawingPile.pop();
     }
+
+    
 }
         
         

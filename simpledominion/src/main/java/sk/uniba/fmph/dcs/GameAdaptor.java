@@ -20,6 +20,19 @@ public class GameAdaptor implements GamePlayerInterface {
             observers[i] = new StoringObserver();
             gameObservable.addPlayer(i, observers[i]);
         }
+
+    }
+
+    public GameObservable getGameObservable() {
+        return gameObservable;
+    }
+
+    public int getOnTurn() {
+        return game.getOnTurn();
+    }
+
+    public void notifyPlayers() {
+        gameObservable.notifyAll(game.getGameState());
     }
 
     /* Performs the action specified in cards for the player 
@@ -36,31 +49,34 @@ public class GameAdaptor implements GamePlayerInterface {
         // check if player is on turn
         int playerIndex = findPlayerIndex(player);
         if (game.getOnTurn() != playerIndex) {
-            throw new IllegalArgumentException("You are not on turn!");
+            return "You are not on turn!";
         }
 
         // decode the input
-        // any Exceptions get forwarded to the caller
-        int cardOnHand = cards.charAt(1) - '0';
         TurnAction action;
+        try {
+            int cardOnHand = cards.charAt(1) - '0' - 1;
 
-        if (cards.length() == 2) {  // "hx", card exchange
-            action = new ExchangeCardAction(cardOnHand);
-        } else if (cards.charAt(2) == ' ') {  // either "hx ay" or "hx ayz"
-            if (cards.length() == 5) {  // "hx ay", queen wake up
-                int sleepingQueenPos = cards.charAt(4) - '0';
-                action = new QueenWakeupAction(cardOnHand, sleepingQueenPos);
-            } else {  // "hx ayz", queen theft
-                int targetedPlayerPos = cards.charAt(4) - '0';
-                int queenPos = cards.charAt(5) - '0';
-                action = new AttackAction(cardOnHand, targetedPlayerPos, queenPos);
+            if (cards.length() == 2) {  // "hx", card exchange
+                action = new ExchangeCardAction(cardOnHand);
+            } else if (cards.charAt(2) == ' ') {  // either "hx ay" or "hx ayz"
+                if (cards.length() == 5) {  // "hx ay", queen wake up
+                    int sleepingQueenPos = cards.charAt(4) - '0' - 1;
+                    action = new QueenWakeupAction(cardOnHand, sleepingQueenPos);
+                } else {  // "hx ayz", queen theft
+                    int targetedPlayerPos = cards.charAt(4) - '0' - 1;
+                    int queenPos = cards.charAt(5) - '0' - 1;
+                    action = new AttackAction(cardOnHand, targetedPlayerPos, queenPos);
+                }
+            } else {  // "hxyz", equation exchange
+                List<Integer> cardIndeces = new ArrayList<>();
+                for (int i = 1; i < cards.length(); i++) {
+                    cardIndeces.add(cards.charAt(i) - '0' - 1);
+                }
+                action = new EquationExchangeAction(cardIndeces);
             }
-        } else {  // "hxyz", equation exchange
-            List<Integer> cardIndeces = new ArrayList<>();
-            for (int i = 1; i < cards.length(); i++) {
-                cardIndeces.add(cards.charAt(i) - '0');
-            }
-            action = new EquationExchangeAction(cardIndeces);
+        } catch (Exception e) {
+            return "Unknown action, check format\n";
         }
         
         // try performing the action
@@ -69,7 +85,7 @@ public class GameAdaptor implements GamePlayerInterface {
             gameObservable.notifyAll(state.get());
             return observers[game.getOnTurn()].getMessage();
         } else {
-            return "Illegal action, check format\n";
+            return "Incorrect arguments, check format\n";
         }
 
     }

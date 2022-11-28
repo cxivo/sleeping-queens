@@ -16,7 +16,18 @@ public class EquationExchangeAction implements TurnAction {
 
     @Override
     public boolean doAction(Player player, Game game) {
+        // check whether there are at least 2 cards
+        if (equation.size() < 2) {
+            return false;
+        }
+
         List<Card> cards = player.getHand().pickCards(equation);
+
+        // check whether the indeces were correct
+        if (cards.size() != equation.size()) {
+            return false;
+        }
+
         // sort them from lowest to highest
         cards.sort(new Comparator<Card>() {
             @Override

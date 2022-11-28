@@ -11,7 +11,8 @@ public class Hand {
     
     public Hand(List<Card> cards, DrawingAndTrashPile pile) {
         this.cards = cards;
-        pickedCards = new ArrayList<>();
+        this.pickedCards = new ArrayList<>();
+        this.remainingCards = new ArrayList<>(cards);
         this.pile = pile;
     }
 
@@ -33,6 +34,7 @@ public class Hand {
     public List<Card> removePickedCardsAndRedraw() {
         cards = remainingCards;
         cards.addAll(pile.discardAndDraw(pickedCards));
+        pickCards(new ArrayList<Integer>());
         return cards;
     }
 
