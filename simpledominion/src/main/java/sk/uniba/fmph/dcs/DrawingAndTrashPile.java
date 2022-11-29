@@ -11,31 +11,23 @@ public class DrawingAndTrashPile {
     private Stack<Card> trashPile;
     private List<Card> cardsDiscardedThisTurn;
     private Random random;
+    private EmptyPileStrategy emptyPileStrategy;
 
     public DrawingAndTrashPile(List<Card> cards, Random random) {
         this.random = random;
+        this.emptyPileStrategy = new ShuffleBeforeDrawingStrategy(this);
 
         drawingPile = new Stack<Card>();
         drawingPile.addAll(cards);
-        Collections.shuffle(drawingPile, random); 
 
         trashPile = new Stack<Card>();
         cardsDiscardedThisTurn = new ArrayList<>();
+
+        shuffleTrashPileToDrawingPile();
     }
         
     public List<Card> discardAndDraw(List<Card> toDiscard) {
-        for (Card card : toDiscard) {
-            trashPile.add(card);
-            cardsDiscardedThisTurn.add(card);
-        }
-
-        List<Card> toDraw = new ArrayList<>();
-
-        for (int i = 0; i < toDiscard.size(); i++) {
-            toDraw.add(getTopCard());
-        }
-        
-        return toDraw;
+        return emptyPileStrategy.discardAndDraw(toDiscard);
     }
 
     // no idea what this method is for, but it's in the design outline
@@ -49,13 +41,29 @@ public class DrawingAndTrashPile {
 
     protected Card getTopCard() {
     	if (drawingPile.isEmpty()) {
-            drawingPile.addAll(trashPile);
-            trashPile.clear();
-            Collections.shuffle(drawingPile, random); 
+            shuffleTrashPileToDrawingPile();
         }
         return drawingPile.pop();
     }
 
+    protected void throwCard(Card card) {
+        trashPile.add(card);
+        cardsDiscardedThisTurn.add(card);
+    }
+
+    protected void shuffleTrashPileToDrawingPile() {
+        drawingPile.addAll(trashPile);
+        trashPile.clear();
+        shuffleDrawingPile();
+    }
+
+    protected void shuffleDrawingPile() {
+        Collections.shuffle(drawingPile, random); 
+    }
+
+    protected int getDrawingPileCardCount() {
+        return drawingPile.size();
+    }
     
 }
         

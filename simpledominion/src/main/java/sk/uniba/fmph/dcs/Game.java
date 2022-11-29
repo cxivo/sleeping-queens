@@ -19,6 +19,10 @@ public class Game {
     private GameFinishedStrategy gameFinishedStrategy;
 
     public Game(int numberOfPlayers) {
+        this(numberOfPlayers, new DrawingAndTrashPile(getFullCardList(), new Random()));
+    }
+
+    protected Game(int numberOfPlayers, DrawingAndTrashPile pile) {
         if ((numberOfPlayers < MIN_PLAYERS) || (numberOfPlayers > MAX_PLAYERS)) {
             throw new IllegalArgumentException("Number of players must be between " + MIN_PLAYERS + " and " + MAX_PLAYERS + " (inclusive)");
         }
@@ -26,21 +30,21 @@ public class Game {
 
         sleepingQueens = new QueenCollection();
         for (int i = 0; i < SLEEPING_QUEENS; i++) {
-            sleepingQueens.addQueen(new Queen(i, 10));
+            sleepingQueens.addQueen(new Queen(10));
         }
 
         players = new ArrayList<>();
 
         gameFinishedStrategy = new GameFinished(this);
 
-        pile = new DrawingAndTrashPile(getFullCardList(), new Random());
+        this.pile = pile;
 
         for (int i = 0; i < numberOfPlayers; i++) {
             List<Card> cardsForPlayer = new ArrayList<>();
             for (int j = 0; j < CARDS_PER_PLAYER; j++) {
-                cardsForPlayer.add(pile.getTopCard());
+                cardsForPlayer.add(this.pile.getTopCard());
             }
-            players.add(new Player(cardsForPlayer, pile));
+            players.add(new Player(cardsForPlayer, this.pile));
         }
     }
 

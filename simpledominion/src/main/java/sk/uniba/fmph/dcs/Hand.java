@@ -12,7 +12,8 @@ public class Hand {
     public Hand(List<Card> cards, DrawingAndTrashPile pile) {
         this.cards = cards;
         this.pickedCards = new ArrayList<>();
-        this.remainingCards = new ArrayList<>(cards);
+        this.remainingCards = new ArrayList<>();
+        this.remainingCards.addAll(cards);
         this.pile = pile;
     }
 
@@ -20,7 +21,7 @@ public class Hand {
         pickedCards.clear();
         remainingCards.clear();
 
-        for (int i = 0; i < Game.CARDS_PER_PLAYER; i++) {
+        for (int i = 0; i < cards.size(); i++) {
             if (positions.contains(i)) {
                 pickedCards.add(cards.get(i));
             } else {
@@ -32,14 +33,16 @@ public class Hand {
     }
 
     public List<Card> removePickedCardsAndRedraw() {
-        cards = remainingCards;
+        cards.clear();
+        cards.addAll(remainingCards);
         cards.addAll(pile.discardAndDraw(pickedCards));
         pickCards(new ArrayList<Integer>());
+
         return cards;
     }
 
     public int hasCardOfType(CardType type) {
-        for (int i = 0; i < Game.CARDS_PER_PLAYER; i++) {
+        for (int i = 0; i < cards.size(); i++) {
             if (cards.get(i).getType() == type) {
                 return i;
             }
