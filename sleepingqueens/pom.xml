@@ -5,10 +5,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>sk.uniba.fmph.dcs</groupId>
-  <artifactId>simpledominion</artifactId>
+  <artifactId>sleepingqueens</artifactId>
   <version>1.0-SNAPSHOT</version>
 
-  <name>simpledominion</name>
+  <name>sleepingqueens</name>
   <url>http://www.dcs.fmph.uniba.sk/~lukotka/PTS/pts.htm</url>
 
   <properties>
