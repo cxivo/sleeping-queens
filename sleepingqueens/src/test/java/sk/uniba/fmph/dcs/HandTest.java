@@ -74,9 +74,6 @@ public class HandTest {
 
         assertEquals(hand.pickCards(Collections.singletonList(2)).get(0).getValue(), 6);
 
-        for (int i = 0; i < 5; i++) {
-            System.out.println(hand.getCards().get(i).getValue());
-        }
         hand.removePickedCardsAndRedraw();
 
         assertEquals(backupCards.get(0), hand.getCards().get(0));
