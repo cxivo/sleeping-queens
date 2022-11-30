@@ -2,6 +2,9 @@ package sk.uniba.fmph.dcs;
 
 import java.util.List;
 
+/**
+ * Structure holding everything one would like to know about the player (at least everything we know)
+ */
 public class PlayerState {
     private List<Card> cards;
     private QueenCollection awokenQueens;

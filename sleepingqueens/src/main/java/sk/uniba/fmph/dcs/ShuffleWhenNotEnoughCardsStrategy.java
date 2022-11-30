@@ -3,6 +3,10 @@ package sk.uniba.fmph.dcs;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A strategy of dealing with an empty drawing pile - draw as many cards as possible 
+ * and shuffle only when the drawing pile is empty
+ */
 public class ShuffleWhenNotEnoughCardsStrategy implements EmptyPileStrategy {
     private DrawingAndTrashPile pile;
 

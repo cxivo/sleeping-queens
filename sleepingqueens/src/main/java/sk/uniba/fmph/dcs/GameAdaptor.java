@@ -4,18 +4,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Provides a more user-friendly way to interact with the Game class.
+ */
 public class GameAdaptor implements GamePlayerInterface {
     private GameObservable gameObservable;
     private StoringObserver[] observers;
     private String[] names;
     private Game game;
 
+    /**
+     * Creates a new game with players with the provided names (in that order)
+     * @param names names of the players
+     */
     public GameAdaptor(String... names) {
         this.names = names;
         this.game = new Game(names.length);
         this.gameObservable = new GameObservable(names);
         this.observers = new StoringObserver[names.length];
 
+        // add an observer to each player - this will make printing information easier
         for (int i = 0; i < names.length; i++) {
             observers[i] = new StoringObserver();
             gameObservable.addPlayer(i, observers[i]);
@@ -35,7 +43,7 @@ public class GameAdaptor implements GamePlayerInterface {
         gameObservable.notifyAll(game.getGameState());
     }
 
-    /* Performs the action specified in cards for the player 
+    /** Performs the action specified in cards for the player 
      * Input format:
      * - throw card x: "hx" where x is card on hand (e.g. "h1")
      * - throw equation made of cards xyz: "hxyz" (e.g. "h12", "h2541")
@@ -43,6 +51,7 @@ public class GameAdaptor implements GamePlayerInterface {
      * - attack queen: "hx ayz" where x is card on hand (Knight, Sleeping potion), 
      *   y is the position of the targeted player and z is the position of their queen
      * @see sk.uniba.fmph.dcs.GamePlayerInterface#play(java.lang.String, java.lang.String)
+     * @return message about how the turn failed or text description if successful
      */
     @Override
     public String play(String player, String cards) {
@@ -90,6 +99,11 @@ public class GameAdaptor implements GamePlayerInterface {
 
     }
 
+    /**
+     * Returns the index of the player in the game.
+     * @param player name of the player
+     * @return index of the player in the player list, -1 if not present
+     */
     private int findPlayerIndex(String player) {
         for (int i = 0; i < names.length; i++) {
             if (names[i].equals(player)) {

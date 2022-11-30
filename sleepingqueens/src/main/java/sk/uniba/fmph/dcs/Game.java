@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
+/**
+ * The main class of the package, which deals with all the game logic
+ */
 public class Game {
     public static final int CARDS_PER_PLAYER = 5;
     public static final int MIN_PLAYERS = 2;
@@ -18,6 +21,10 @@ public class Game {
     private DrawingAndTrashPile pile;
     private GameFinishedStrategy gameFinishedStrategy;
 
+    /**
+     * Public constructor for the class
+     * @param numberOfPlayers number of players in the game
+     */
     public Game(int numberOfPlayers) {
         this(numberOfPlayers, new DrawingAndTrashPile(getFullCardList(), new Random()));
     }
@@ -28,6 +35,7 @@ public class Game {
         }
         this.numberOfPlayers = numberOfPlayers;
 
+        // add sleeping queens
         sleepingQueens = new QueenCollection();
         for (int i = 0; i < SLEEPING_QUEENS; i++) {
             sleepingQueens.addQueen(new Queen(10));
@@ -39,6 +47,7 @@ public class Game {
 
         this.pile = pile;
 
+        // give players cards
         for (int i = 0; i < numberOfPlayers; i++) {
             List<Card> cardsForPlayer = new ArrayList<>();
             for (int j = 0; j < CARDS_PER_PLAYER; j++) {
@@ -48,6 +57,11 @@ public class Game {
         }
     }
 
+    /**
+     * This method performs the action for the player on turn. If successful, the next player is on turn.
+     * @param action the action the player wants to take
+     * @return the new GameState after this turn. If empty, the action was invalid and the same player is still on turn.
+     */
     public Optional<GameState> play(TurnAction action) {
         if (action.doAction(players.get(onTurn), this)) {
             // success
@@ -60,6 +74,9 @@ public class Game {
         }
     }
 
+    /**
+     * @return the current state of the game
+     */
     public GameState getGameState() {
         // get player states
         List<PlayerState> playerStates = new ArrayList<>();
@@ -92,6 +109,9 @@ public class Game {
         return onTurn;
     }
 
+    /**
+     * @return list of all cards used in this version of the game
+     */
     protected static List<Card> getFullCardList() {
         List<Card> cards = new ArrayList<>();
 

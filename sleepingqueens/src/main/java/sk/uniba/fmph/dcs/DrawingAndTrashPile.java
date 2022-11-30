@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Class for representing the drawing pile and the trash pile of the game.
+ * Contains the logic for drawing and shuffling cards
+ */
 public class DrawingAndTrashPile {
     private Stack<Card> drawingPile;
     private Stack<Card> trashPile;
@@ -26,6 +30,9 @@ public class DrawingAndTrashPile {
         shuffleTrashPileToDrawingPile();
     }
         
+    /** 
+     * Uses the strategy to deal with this
+     */
     public List<Card> discardAndDraw(List<Card> toDiscard) {
         return emptyPileStrategy.discardAndDraw(toDiscard);
     }
@@ -35,6 +42,9 @@ public class DrawingAndTrashPile {
         return cardsDiscardedThisTurn;
     }
 
+    /**
+     * Call this method when the next player is on turn
+     */
     public void newTurn() {
         cardsDiscardedThisTurn.clear();
     }

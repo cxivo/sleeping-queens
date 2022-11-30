@@ -4,6 +4,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Class for representing the action of using a Knight or a Sleeping Potion on a player's queen
+ */
 public class AttackAction implements TurnAction {
     private int cardPosition;
     private int playerIndex;

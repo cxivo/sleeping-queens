@@ -39,6 +39,7 @@ public class DrawingAndTrashPileTest  {
 
     @Test
     public void testReshuffleOrder() {
+        
         class NonShufflingPile extends DrawingAndTrashPile {
             public NonShufflingPile(List<Card> cards) {
                 super(cards, new Random(0));

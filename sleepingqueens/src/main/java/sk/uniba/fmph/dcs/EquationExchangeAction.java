@@ -3,9 +3,16 @@ package sk.uniba.fmph.dcs;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Class for representing the action of throwing multiple numeric cards which make up an additive equation.
+ * Also represents throwing two number cards of the same value (since x = x is a valid additive equation)
+ */
 public class EquationExchangeAction implements TurnAction {
     private List<Integer> equation;
 
+    /**
+     * @param equation the positions of cards on player's hand which make up an additive equation
+     */
     public EquationExchangeAction(List<Integer> equation) {
         this.equation = equation;
     }

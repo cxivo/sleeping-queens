@@ -3,6 +3,9 @@ package sk.uniba.fmph.dcs;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A strategy of dealing with an empty drawing pile - shuffle the trash pile before taking anything
+ */
 public class ShuffleBeforeDrawingStrategy implements EmptyPileStrategy {
     private DrawingAndTrashPile pile;
 
